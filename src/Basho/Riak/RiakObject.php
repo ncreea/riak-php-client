@@ -23,12 +23,12 @@ use Basho\Riak\Link;
 use Basho\Riak\MapReduce;
 
 /**
- * \Basho\Riak\Object
+ * \Basho\Riak\RiakObject
  *
  * @category   Basho
  * @author     Riak team (https://github.com/basho/riak-php-client/contributors)
  */
-class Object
+class RiakObject
 {
     /**
      * @var mixed
@@ -42,35 +42,35 @@ class Object
 
     /**
      * @var array Meta data store
-     * @see \Basho\Riak\Object::setMeta()
-     * @see \Basho\Riak\Object::getMeta()
-     * @see \Basho\Riak\Object::getAllMeta()
-     * @see \Basho\Riak\Object::removeMeta()
-     * @see \Basho\Riak\Object::removeAllMeta()
+     * @see \Basho\Riak\RiakObject::setMeta()
+     * @see \Basho\Riak\RiakObject::getMeta()
+     * @see \Basho\Riak\RiakObject::getAllMeta()
+     * @see \Basho\Riak\RiakObject::removeMeta()
+     * @see \Basho\Riak\RiakObject::removeAllMeta()
      */
     protected $meta = array();
 
     /**
      * @var array Array of indexes
-     * @see \Basho\Riak\Object::addIndex()
-     * @see \Basho\Riak\Object::setIndex()
-     * @see \Basho\Riak\Object::getIndex()
-     * @see \Basho\Riak\Object::removeIndex()
-     * @see \Basho\Riak\Object::removeAllIndexes()
+     * @see \Basho\Riak\RiakObject::addIndex()
+     * @see \Basho\Riak\RiakObject::setIndex()
+     * @see \Basho\Riak\RiakObject::getIndex()
+     * @see \Basho\Riak\RiakObject::removeIndex()
+     * @see \Basho\Riak\RiakObject::removeAllIndexes()
      */
     protected $indexes = array();
 
     /**
      * @var array Array of automatic indexes
-     * @see \Basho\Riak\Object::addAutoIndex()
-     * @see \Basho\Riak\Object::hasAutoIndex()
-     * @see \Basho\Riak\Object::removeAutoIndex()
-     * @see \Basho\Riak\Object::removeAllAutoIndexes()
+     * @see \Basho\Riak\RiakObject::addAutoIndex()
+     * @see \Basho\Riak\RiakObject::hasAutoIndex()
+     * @see \Basho\Riak\RiakObject::removeAutoIndex()
+     * @see \Basho\Riak\RiakObject::removeAllAutoIndexes()
      */
     protected $autoIndexes = array();
 
     /**
-     * Construct a new Object.
+     * Construct a new RiakObject.
      * @param Riak $client - A Client object.
      * @param Bucket $bucket - A Bucket object.
      * @param string $key - An optional key. If not specified, then key
@@ -131,7 +131,7 @@ class Object
      *
      * @param mixed $data - The data to store.
      *
-     * @return Object
+     * @return RiakObject
      */
     public function setData($data)
     {
@@ -205,13 +205,13 @@ class Object
 
 
     /**
-     * Add a link to a Object.
+     * Add a link to a RiakObject.
      *
-     * @param mixed $obj - Either a Object or a Link object.
+     * @param mixed $obj - Either a RiakObject or a Link object.
      * @param string $tag - Optional link tag. (default is bucket name,
      * ignored if $obj is a Link object.)
      *
-     * @return Object
+     * @return RiakObject
      */
     public function addLink($obj, $tag = null)
     {
@@ -228,11 +228,11 @@ class Object
     }
 
     /**
-     * Remove a link to a Object.
+     * Remove a link to a RiakObject.
      *
-     * @param mixed $obj - Either a Object or a Link object.
+     * @param mixed $obj - Either a RiakObject or a Link object.
      * @param string $tag -
-     * @param mixed $obj - Either a Object or a Link object.
+     * @param mixed $obj - Either a RiakObject or a Link object.
      * @param string $tag - Optional link tag. (default is bucket name,
      * ignored if $obj is a Link object.)
      *
@@ -651,7 +651,7 @@ class Object
         # Add the auto indexes...
         $collisions = array();
         if (!empty($this->autoIndexes) && !is_array($this->data)) {
-            throw new Exception('Unsupported data type for auto indexing feature.  Object must be an array to use auto indexes.');
+            throw new Exception('Unsupported data type for auto indexing feature.  RiakObject must be an array to use auto indexes.');
         }
 
         foreach ($this->autoIndexes as $index => $fieldName) {
@@ -966,7 +966,7 @@ class Object
      * @param  integer $r - R-Value. Wait until this many partitions
      * have responded before returning to client.
      *
-     * @return Object.
+     * @return RiakObject.
      */
     public function getSibling($i, $r = null)
     {
@@ -980,7 +980,7 @@ class Object
         $response = Utils::httpRequest('GET', $url);
 
         # Respond with a new object...
-        $obj = new Object($this->client, $this->bucket, $this->key);
+        $obj = new RiakObject($this->client, $this->bucket, $this->key);
         $obj->jsonize = $this->jsonize;
         $obj->populate($response, array(200));
 
@@ -993,7 +993,7 @@ class Object
      * @param integer $r - R-Value. Wait until this many partitions have
      * responded before returning to client.
      *
-     * @return array of Object
+     * @return array of RiakObject
      */
     public function getSiblings($r = null)
     {

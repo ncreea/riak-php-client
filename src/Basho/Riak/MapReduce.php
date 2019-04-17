@@ -23,7 +23,7 @@ use Basho\Riak\Exception,
     Basho\Riak\Link,
     Basho\Riak\Link\Phase as LinkPhase,
     Basho\Riak\MapReduce\Phase as MapReducePhase,
-    Basho\Riak\Object,
+    Basho\Riak\RiakObject,
     Basho\Riak\Utils;
 
 /**
@@ -56,10 +56,10 @@ class MapReduce
      *
      * This method takes three different forms,
      * depending on the provided inputs. You can
-     * specify either  a Object, a string bucket name,
+     * specify either  a RiakObject, a string bucket name,
      * or a bucket, key, and additional arg.
      *
-     * @param mixed $arg1 Object or Bucket
+     * @param mixed $arg1 RiakObject or Bucket
      * @param mixed $arg2 Key or blank
      * @param mixed $arg3 Arg or blank
      * @return MapReduce
@@ -67,7 +67,7 @@ class MapReduce
     public function add($arg1, $arg2 = null, $arg3 = null)
     {
         if (func_num_args() == 1) {
-            if ($arg1 instanceof Object) {
+            if ($arg1 instanceof RiakObject) {
                 return $this->add_object($arg1);
             } else {
                 return $this->add_bucket($arg1);

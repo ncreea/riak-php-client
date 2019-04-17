@@ -47,9 +47,9 @@ class Link
     }
 
     /**
-     * Retrieve the Object to which this link points.
+     * Retrieve the RiakObject to which this link points.
      * @param integer $r - The R-value to use.
-     * @return Object
+     * @return RiakObject
      */
     public function get($r = null)
     {
@@ -57,9 +57,9 @@ class Link
     }
 
     /**
-     * Retrieve the Object to which this link points, as a binary.
+     * Retrieve the RiakObject to which this link points, as a binary.
      * @param integer $r - The R-value to use.
-     * @return Object
+     * @return RiakObject
      */
     public function getBinary($r = null)
     {

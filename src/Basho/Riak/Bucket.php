@@ -166,11 +166,11 @@ class Bucket
      * @param  string $key - Name of the key. (default NULL)
      * @param  object $data - The data to store. (default NULL)
      *
-     * @return Object
+     * @return RiakObject
      */
     public function newObject($key = null, $data = null)
     {
-        $obj = new Object($this->client, $this, $key);
+        $obj = new RiakObject($this->client, $this, $key);
         $obj->setData($data);
         $obj->setContentType('application/json');
         $obj->jsonize = true;
@@ -185,11 +185,11 @@ class Bucket
      * @param  object $data - The data to store.
      * @param  string $content_type - The content type of the object. (default 'application/json')
      *
-     * @return Object
+     * @return RiakObject
      */
     public function newBinary($key = null, $data, $content_type = 'application/json')
     {
-        $obj = new Object($this->client, $this, $key);
+        $obj = new RiakObject($this->client, $this, $key);
         $obj->setData($data);
         $obj->setContentType($content_type);
         $obj->jsonize = false;
@@ -203,11 +203,11 @@ class Bucket
      * @param  string $key - Name of the key.
      * @param  int $r   - R-Value of the request (defaults to bucket's R)
      *
-     * @return Object
+     * @return RiakObject
      */
     public function get($key, $r = null)
     {
-        $obj = new Object($this->client, $this, $key);
+        $obj = new RiakObject($this->client, $this, $key);
         $obj->jsonize = true;
 
         return $obj->reload($r);
@@ -219,11 +219,11 @@ class Bucket
      * @param  string $key - Name of the key.
      * @param  int $r   - R-Value of the request (defaults to bucket's R)
      *
-     * @return Object
+     * @return RiakObject
      */
     public function getBinary($key, $r = null)
     {
-        $obj = new Object($this->client, $this, $key);
+        $obj = new RiakObject($this->client, $this, $key);
         $obj->jsonize = false;
 
         return $obj->reload($r);
@@ -362,8 +362,8 @@ class Bucket
         $url = Utils::buildRestPath($this->client, $this, null, null, $params);
         $response = Utils::httpRequest('GET', $url);
 
-        # Use a Object to interpret the response, we are just interested in the value.
-        $obj = new Object($this->client, $this, null);
+        # Use a RiakObject to interpret the response, we are just interested in the value.
+        $obj = new RiakObject($this->client, $this, null);
         $obj->populate($response, array(200));
         if (!$obj->exists()) {
             throw new Exception("Error getting bucket properties.");
@@ -389,8 +389,8 @@ class Bucket
         $url = Utils::buildRestPath($this->client, $this, null, null, $params);
         $response = Utils::httpRequest('GET', $url);
 
-        # Use a Object to interpret the response, we are just interested in the value.
-        $obj = new Object($this->client, $this, null);
+        # Use a RiakObject to interpret the response, we are just interested in the value.
+        $obj = new RiakObject($this->client, $this, null);
         $obj->populate($response, array(200));
         if (!$obj->exists()) {
             throw new Exception("Error getting bucket properties.");
@@ -419,7 +419,7 @@ class Bucket
         $url = Utils::buildIndexPath($this->client, $this, "{$indexName}_{$indexType}", $startOrExact, $end, null);
         $response = Utils::httpRequest('GET', $url);
 
-        $obj = new Object($this->client, $this, null);
+        $obj = new RiakObject($this->client, $this, null);
 
         $obj->populate($response, array(200));
         if (!$obj->exists()) {
